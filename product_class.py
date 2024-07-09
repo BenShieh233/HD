@@ -3,18 +3,22 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 import time
 
 class Product:
     brand_counts = {}
 
-    def __init__(self, label=None, price=None, brand=None, title=None, href=None, NO = None):
+    def __init__(self, NO = None, label=None, price=None, brand=None, title=None, href=None, review_num = None, first_review = None, first_review_date = None):
         self.NO = NO
         self.label = label
         self.price = price
         self.brand = brand
         self.title = title
         self.href = href
+        self.review_num = review_num
+        self.first_review = first_review
+        self.first_review_date = first_review_date
 
         # Update brand counts when brand is present
         if self.brand:
@@ -25,6 +29,17 @@ class Product:
             Product.brand_counts[self.brand] += 1
         else:
             Product.brand_counts[self.brand] = 1
+
+    def to_dict(self):
+        return {
+            'Number': self.NO,
+            'Label': self.label,
+            'Brand': self.brand,
+            'Title': self.title,
+            'price': self.price,
+            'Review_Number': self.review_num,
+            'href': self.href
+        }
 
     @classmethod
     def get_brand_counts(cls):
@@ -66,6 +81,13 @@ class Product:
             title = None
 
         try:
+            review_num_element = 'span.sui-font-regular.sui-text-xs.sui-leading-tight.sui-tracking-normal.sui-normal-case.sui-line-clamp-unset.sui-text-primary'
+            review_num_block = box.find_element(By.CSS_SELECTOR, review_num_element)
+            review_num = review_num_block.text.strip("()")
+        except Exception as e:
+            review_num = None
+
+        try:
             # Extract href link
             href_element = 'a.sui-font-regular.sui-text-base.sui-tracking-normal.sui-normal-case.sui-line-clamp-unset.sui-text-primary.focus-visible\\:sui-bg-focus.focus-visible\\:sui-outline-none.hover\\:sui-underline'
             href_block = box.find_element(By.CSS_SELECTOR, href_element)
@@ -73,8 +95,10 @@ class Product:
         except Exception as e:
             href = None
 
-        return cls(NO = NO, label=label, price=price, brand=brand, title=title, href=href)
+        return cls(NO = NO, label=label, price=price, brand=brand, title=title, review_num=review_num, href=href)
+    
+
 
     def __repr__(self):
-        return f"Product(NO={self.NO}, brand={self.brand}, title={self.title}, price={self.price}, label={self.label}, href={self.href})"
+        return f"Product(NO={self.NO}, brand={self.brand}, title={self.title}, price={self.price}, label={self.label}, review_number = {self.review_num}, href={self.href})"
 
