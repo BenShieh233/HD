@@ -1,15 +1,9 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-import time
 
 class Product:
     brand_counts = {}
 
-    def __init__(self, NO = None, label=None, price=None, brand=None, title=None, href=None, review_num = None, first_review = None, first_review_date = None):
+    def __init__(self, NO = None, label=None, price=None, brand=None, title=None, href=None, review_num = None):
         self.NO = NO
         self.label = label
         self.price = price
@@ -17,8 +11,7 @@ class Product:
         self.title = title
         self.href = href
         self.review_num = review_num
-        self.first_review = first_review
-        self.first_review_date = first_review_date
+
 
         # Update brand counts when brand is present
         if self.brand:
