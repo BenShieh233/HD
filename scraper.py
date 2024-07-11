@@ -28,7 +28,7 @@ class Scraper:
 
     def visit_page(self, url):
         self.driver.get(url)
-        time.sleep(5)
+        time.sleep(2)
 
     def get_products(self):
         grids = self.driver.find_elements(By.CSS_SELECTOR, '[id^="browse-search-pods-"]')
@@ -41,7 +41,7 @@ class Scraper:
             for box in boxes:
                 product = Product.from_web_element(box, self.n)
                 self.n += 1
-                self.products.append(product)   
+                self.products.append(product)
 
 
     def next_page(self, page_num):
@@ -50,6 +50,7 @@ class Scraper:
         )
         href = pagination_link.get_attribute('href')
         self.driver.get(href)
+        time.sleep(2)
 
     def scrape(self, start_page=1, end_page=5):
         self.setup_driver()
@@ -65,8 +66,8 @@ class Scraper:
     def to_dataframe(self):
         product_dicts = [product.to_dict() for product in self.products]
         df = pd.DataFrame(product_dicts).set_index('Number')
-        df = df[(df['Label'] != 'Sponsored') & 
-                 (~df['Brand'].isin(['Hampton Bay', 'Home Decorators Collection']))]
+        # df = df[(df['Label'] != 'Sponsored') & 
+        #          (~df['Brand'].isin(['Hampton Bay', 'Home Decorators Collection']))]
         return df
 
 
