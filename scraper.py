@@ -5,6 +5,8 @@ from IPython.display import display, Image
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import time
+from datetime import datetime
+
 import pandas as pd
 
 from product_class import Product
@@ -66,6 +68,7 @@ class Scraper:
     def to_dataframe(self):
         product_dicts = [product.to_dict() for product in self.products]
         df = pd.DataFrame(product_dicts).set_index('Number')
+        df['Date'] = datetime.today().date()
         # df = df[(df['Label'] != 'Sponsored') & 
         #          (~df['Brand'].isin(['Hampton Bay', 'Home Decorators Collection']))]
         return df

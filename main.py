@@ -52,14 +52,10 @@ def schedule_tasks():
 
 if __name__ == '__main__':
 
-    run_scraper()
-    # schedule_tasks()
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
+    base_url = 'https://www.homedepot.com/b/Lighting-Ceiling-Fans-Ceiling-Fans-With-Lights/N-5yc1vZcjnu?NCNI-5&searchRedirect=ceiling%20fan%20with%20lights&semanticToken=k27r10r00f22000000000e_202407051741572580635995840_us-central1-bz9l%20k27r10r00f22000000000e%20%3E%20st%3A%7Bceiling%20fan%20with%20lights%7D%3Ast%20ml%3A%7B24%7D%3Aml%20nr%3A%7Bceiling%20fan%20with%20lights%7D%3Anr%20nf%3A%7Bn%2Fa%7D%3Anf%20qu%3A%7Bceiling%20fan%20with%20lights%7D%3Aqu%20ie%3A%7B0%7D%3Aie%20qr%3A%7Bceiling%20fan%20with%20lights%7D%3Aqr'
+    scraper = Scraper(base_url)
+    scraper.scrape(start_page=1, end_page=5)
+    df = scraper.to_dataframe()
 
-    # base_url = 'https://www.homedepot.com/b/Lighting-Ceiling-Fans-Ceiling-Fans-With-Lights/N-5yc1vZcjnu?NCNI-5&searchRedirect=ceiling%20fan%20with%20lights&semanticToken=k27r10r00f22000000000e_202407051741572580635995840_us-central1-bz9l%20k27r10r00f22000000000e%20%3E%20st%3A%7Bceiling%20fan%20with%20lights%7D%3Ast%20ml%3A%7B24%7D%3Aml%20nr%3A%7Bceiling%20fan%20with%20lights%7D%3Anr%20nf%3A%7Bn%2Fa%7D%3Anf%20qu%3A%7Bceiling%20fan%20with%20lights%7D%3Aqu%20ie%3A%7B0%7D%3Aie%20qr%3A%7Bceiling%20fan%20with%20lights%7D%3Aqr'
-    # scraper = Scraper(base_url)
-    # scraper.scrape(start_page=1, end_page=5)
-    # df = scraper.to_dataframe()
-    # df.to_csv('HD_products.csv')
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    df.to_csv(f'HD_products{timestamp}.csv')
