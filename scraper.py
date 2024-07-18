@@ -30,7 +30,7 @@ class Scraper:
 
     def visit_page(self, url):
         self.driver.get(url)
-        time.sleep(2)
+        time.sleep(5)
 
     def get_products(self):
         grids = self.driver.find_elements(By.CSS_SELECTOR, '[id^="browse-search-pods-"]')
@@ -38,7 +38,7 @@ class Scraper:
             # Scroll into view to ensure boxes are loaded
             actions = ActionChains(self.driver)
             actions.move_to_element(grid).perform()
-            time.sleep(1)
+            time.sleep(4)
             boxes = grid.find_elements(By.CLASS_NAME, 'browse-search__pod')
             for box in boxes:
                 product = Product.from_web_element(box, self.n)
