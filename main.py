@@ -275,11 +275,13 @@ def main():
 
     upload_file_1 = filename1
     upload_file_2 = filename2
-    gfile = drive.CreateFile({'parents':[{'id':'1tiu74hnlyNGhVOBYQN8SNdnmbKXBr_th'}]})
-    gfile.SetContentFile(upload_file_1)
-    gfile.Upload()
-    gfile.SetContentFile(upload_file_2)
-    gfile.Upload()
+    gfile1 = drive.CreateFile({'parents':[{'id':'1tiu74hnlyNGhVOBYQN8SNdnmbKXBr_th'}]})
+    gfile1.SetContentFile(upload_file_1)
+    gfile1.Upload()
+
+    gfile2 = drive.CreateFile({'parents':[{'id':'1tiu74hnlyNGhVOBYQN8SNdnmbKXBr_th'}]})
+    gfile2.SetContentFile(upload_file_2)
+    gfile2.Upload()
 
 
 
