@@ -2,7 +2,7 @@ from scraper import Scraper
 from product_class import Product
 
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,6 +19,11 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 import pandas as pd
+
+import schedule
+import time
+from datetime import datetime
+import pytz
 
 
 options = webdriver.ChromeOptions()
@@ -286,4 +291,23 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # Function to schedule the task at specific times
+    def schedule_task(hour, minute):
+        seattle_tz = pytz.timezone('America/Los_Angeles')
+        now = datetime.now(seattle_tz)
+        target_time = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+
+        if now > target_time:
+            target_time = target_time + timedelta(days=1)
+
+        delay = (target_time - now).total_seconds()
+
+        schedule.every(delay).seconds.do(main)
+
+    # Schedule the task at 12 PM and 5 PM Seattle time
+    schedule_task(12, 0)
+    schedule_task(17, 0)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
